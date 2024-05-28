@@ -1,17 +1,27 @@
 import React, { useEffect } from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { Controller, useFormContext, useFieldArray } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid'; // Import uuid
+import { Owner } from '../../ECommerceApi'; // Assuming Owner type is exported from ECommerceApi
+
+// Define the form values type
+interface FormValues {
+    owners: Owner[];
+}
 
 function OwnersTab() {
-    const { control, register, setValue, watch } = useFormContext();
-    const { fields, append, remove } = useFieldArray({ control, name: 'owners' });
-    
+    const { control, register } = useFormContext<FormValues>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'owners',
+    });
+
     useEffect(() => {
         register('owners');
     }, [register]);
 
     const addOwner = () => {
-        append({ id: fields.length + 1, name: '', address: '', contact: '', tin: '' });
+        append({ id: uuidv4(), name: '', address: '', contact: '', tin: '' });
     };
 
     return (
@@ -23,7 +33,7 @@ function OwnersTab() {
                 <Grid container spacing={2} key={field.id}>
                     <Grid item xs={12} md={6}>
                         <Controller
-                            name={`owners[${index}].name`}
+                            name={`owners.${index}.name`}
                             control={control}
                             defaultValue={field.name}
                             render={({ field }) => (
@@ -38,7 +48,7 @@ function OwnersTab() {
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Controller
-                            name={`owners[${index}].address`}
+                            name={`owners.${index}.address`}
                             control={control}
                             defaultValue={field.address}
                             render={({ field }) => (
@@ -52,7 +62,7 @@ function OwnersTab() {
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Controller
-                            name={`owners[${index}].contact`}
+                            name={`owners.${index}.contact`}
                             control={control}
                             defaultValue={field.contact}
                             render={({ field }) => (
@@ -66,7 +76,7 @@ function OwnersTab() {
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Controller
-                            name={`owners[${index}].tin`}
+                            name={`owners.${index}.tin`}
                             control={control}
                             defaultValue={field.tin}
                             render={({ field }) => (

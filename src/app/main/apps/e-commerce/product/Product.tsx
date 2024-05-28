@@ -18,32 +18,34 @@ import InventoryTab from './tabs/InventoryTab';
 import PricingTab from './tabs/PricingTab';
 import ProductImagesTab from './tabs/ProductImagesTab';
 import ShippingTab from './tabs/ShippingTab';
+import OwnersTab from './tabs/OwnersTab';
 import { useGetECommerceProductQuery } from '../ECommerceApi';
 import ProductModel from './models/ProductModel';
-import OwnersTab from './tabs/OwnersTab';
+import { Owner } from '../ECommerceApi'; // Assuming Owner type is exported from ECommerceApi
 
 const schema = z.object({
     name: z.string().nonempty('You must enter a product name').min(5, 'The product name must be at least 5 characters')
 });
 
+type FormValues = {
+    owners: Owner[];
+    name: string;
+    // Add other fields as needed
+};
+
 function Product() {
     const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
     const routeParams = useParams();
-
     const { productId } = routeParams;
 
-    const {
-        data: product,
-        isLoading,
-        isError
-    } = useGetECommerceProductQuery(productId, {
+    const { data: product, isLoading, isError } = useGetECommerceProductQuery(productId, {
         skip: !productId || productId === 'new'
     });
 
     const [tabValue, setTabValue] = useState(0);
 
-    const methods = useForm({
+    const methods = useForm<FormValues>({
         mode: 'onChange',
         defaultValues: {},
         resolver: zodResolver(schema)
@@ -81,10 +83,7 @@ function Product() {
                 animate={{ opacity: 1, transition: { delay: 0.1 } }}
                 className="flex flex-col flex-1 items-center justify-center h-full"
             >
-                <Typography
-                    color="text.secondary"
-                    variant="h5"
-                >
+                <Typography color="text.secondary" variant="h5">
                     There is no such product!
                 </Typography>
                 <Button
@@ -119,52 +118,29 @@ function Product() {
                             scrollButtons="auto"
                             classes={{ root: 'w-full h-64 border-b-1' }}
                         >
-                            <Tab
-                                className="h-64"
-                                label="Owners"
-                            />
-                            <Tab
-                                className="h-64"
-                                label="Basic Info"
-                            />
-                            <Tab
-                                className="h-64"
-                                label="Product Images"
-                            />
-                            <Tab
-                                className="h-64"
-                                label="Pricing"
-                            />
-                            <Tab
-                                className="h-64"
-                                label="Inventory"
-                            />
-                            <Tab
-                                className="h-64"
-                                label="Shipping"
-                            />
+                            <Tab className="h-64" label="Owners" />
+                            <Tab className="h-64" label="Basic Info" />
+                            <Tab className="h-64" label="Product Images" />
+                            <Tab className="h-64" label="Pricing" />
+                            <Tab className="h-64" label="Inventory" />
+                            <Tab className="h-64" label="Shipping" />
                         </Tabs>
                         <div className="p-16 sm:p-24 max-w-3xl">
                             <div className={tabValue !== 0 ? 'hidden' : ''}>
                                 <OwnersTab />
                             </div>
-
                             <div className={tabValue !== 1 ? 'hidden' : ''}>
                                 <BasicInfoTab />
                             </div>
-
                             <div className={tabValue !== 2 ? 'hidden' : ''}>
                                 <ProductImagesTab />
                             </div>
-
                             <div className={tabValue !== 3 ? 'hidden' : ''}>
                                 <PricingTab />
                             </div>
-
                             <div className={tabValue !== 4 ? 'hidden' : ''}>
                                 <InventoryTab />
                             </div>
-
                             <div className={tabValue !== 5 ? 'hidden' : ''}>
                                 <ShippingTab />
                             </div>

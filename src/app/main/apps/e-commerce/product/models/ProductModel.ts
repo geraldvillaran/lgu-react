@@ -8,6 +8,7 @@ import { EcommerceProduct } from '../../ECommerceApi';
 const ProductModel = (data: PartialDeep<EcommerceProduct>) =>
 	_.defaults(data || {}, {
 		id: _.uniqueId('product-'),
+		owners: [],
 		name: '',
 		handle: '',
 		description: '',
