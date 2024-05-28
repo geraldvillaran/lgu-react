@@ -6079,6 +6079,14 @@
         "x-examples": {
           "example-1": {
             "id": "1",
+            "owners": [
+              {
+                "name": "0",
+                "address": "assets/images/apps/ecommerce/a-walk-amongst-friends.jpg",
+                "contact": "image",
+                "tin": "123"
+              }
+            ],
             "name": "A Walk Amongst Friends - Canvas Print",
             "handle": "a-walk-amongst-friends-canvas-print",
             "description": "Officia amet eiusmod eu sunt tempor voluptate laboris velit nisi amet enim proident et. Consequat laborum non eiusmod cillum eu exercitation. Qui adipisicing est fugiat eiusmod esse. Sint aliqua cupidatat pariatur mollit ad est proident reprehenderit. Eiusmod adipisicing laborum incididunt sit aliqua ullamco.",
@@ -17770,6 +17778,20 @@
         "value": [
           {
             "id": "1",
+            "owners": [
+              {
+                "name": "0",
+                "address": "Gatid, Santa Cruz Laguna 4009",
+                "contact": "09654905182",
+                "tin": "6549873211"
+              },
+              {
+                "name": "Gerald",
+                "address": "assets/images/apps/ecommerce/a-walk-amongst-friends.jpg",
+                "contact": "09086057527",
+                "tin": "789312567"
+              }
+            ],
             "name": "A Walk Amongst Friends - Canvas Print",
             "handle": "a-walk-amongst-friends-canvas-print",
             "description": "Officia amet eiusmod eu sunt tempor voluptate laboris velit nisi amet enim proident et. Consequat laborum non eiusmod cillum eu exercitation. Qui adipisicing est fugiat eiusmod esse. Sint aliqua cupidatat pariatur mollit ad est proident reprehenderit. Eiusmod adipisicing laborum incididunt sit aliqua ullamco.",

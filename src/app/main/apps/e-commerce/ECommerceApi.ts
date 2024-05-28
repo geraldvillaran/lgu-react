@@ -121,6 +121,14 @@ export type DeleteECommerceOrderApiArg = string; // Order id
 export type DeleteECommerceOrdersApiResponse = unknown;
 export type DeleteECommerceOrdersApiArg = string[]; // Orders id
 
+export type Owner = {
+    id: string;
+    name: string;
+    address: string;
+    contact: string;
+    tin: string;
+};
+
 export type EcommerceProductImageType = {
 	id: string;
 	url: string;
@@ -129,6 +137,7 @@ export type EcommerceProductImageType = {
 
 export type EcommerceProduct = {
 	id: string;
+	owners: Owner[];
 	name: string;
 	handle: string;
 	description: string;
