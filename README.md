@@ -42,3 +42,41 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+```bash
+├── public/
+│   └── assets/
+│       └── images/
+│           └── app  /
+│               └── ecommerce //This is where the images for products are/
+│                   ├── fall-glow.jpg
+│                   ├── ...
+│                   └── ...
+└── src/
+    ├── @mock-api/
+    │   ├── mock-api.json
+    │   └── MockAdapterProvider.tsx
+    └── app/
+        └── main/
+            └── apps/
+                ├── e-commerce
+                ├── product/
+                │   ├── models/
+                │   │   └── ProductModel.ts
+                │   ├── tabs/
+                │   │   ├── OwnersTab.tsx
+                │   │   ├── BasicInfoTab.tsx
+                │   │   ├── InventoryTab.tsx
+                │   │   ├── PricingTab.tsx
+                │   │   ├── ProductImagesTab.tsx
+                │   │   └── ShippingTab.tsx
+                │   ├── Product.tsx
+                │   └── ProductHeader.tsx
+                ├── products/
+                │   ├── Products.tsx
+                │   ├── ProductsHeader.tsx
+                │   └── ProductsTable.tsx
+                ├── ECommerceApi.ts
+                ├── ECommerceApp.tsx
+                └── ECommerceAppConfig.tsx
+```
