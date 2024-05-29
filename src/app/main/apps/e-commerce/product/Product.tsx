@@ -127,7 +127,8 @@ function Product() {
                             <Tab className="h-64" label="Market Value" />
                             <Tab className="h-64" label="Property Assessment" />
                         </Tabs>
-                        <div className="p-16 sm:p-24 max-w-3xl">
+                        <div className="p-16 sm:p-24 ">
+                            {/* max-w-3xl */}
                             <div className={tabValue !== 0 ? 'hidden' : ''}>
                                 <BasicInfoTab />
                             </div>
