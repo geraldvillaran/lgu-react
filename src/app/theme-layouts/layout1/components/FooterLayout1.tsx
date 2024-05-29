@@ -32,7 +32,8 @@ function FooterLayout1(props: FooterLayout1Props) {
 				elevation={0}
 			>
 				<Toolbar className="min-h-48 md:min-h-64 px-8 sm:px-12 py-0 flex items-center overflow-x-auto">
-					<DemoLayoutFooterContent />
+					{/* <DemoLayoutFooterContent /> */}
+					LGU Modules Demo © 2024
 				</Toolbar>
 			</AppBar>
 		</ThemeProvider>
