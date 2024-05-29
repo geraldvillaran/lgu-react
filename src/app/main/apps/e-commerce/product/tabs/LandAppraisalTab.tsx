@@ -4,84 +4,87 @@ import { Controller, useFormContext, useFieldArray } from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
 import CloseIcon from '@mui/icons-material/Close';
 import { v4 as uuidv4 } from 'uuid';
-import { Owner } from '../../ECommerceApi'; // Assuming Owner type is exported from ECommerceApi
+import { Classification } from '../../ECommerceApi'; // Assuming Classification type is exported from ECommerceApi
 
 // Define the form values type
 interface FormValues {
-    owners: Array<Owner & { owner_select?: { name: string; address: string } }>;
+    classifications: Array<Classification & { classification_select?: { classification: string; sub_classification: string, adjustment_value: string } }>;
 }
 
 // Static list of options for the Autocomplete
-const ownerOptions = [
-    { name: 'John Doe', address: '123 Main St', contact: '123-456-7890', tin: '123-45-6789' },
-    { name: 'Jane Smith', address: '456 Oak Ave', contact: '987-654-3210', tin: '987-65-4321' },
-    { name: 'Sam Johnson', address: '789 Pine Rd', contact: '555-555-5555', tin: '555-55-5555' },
-    // Add more options as needed
+const classificationOptions = [
+    { classification: 'Residential', sub_classification: 'Single Detached', adjustment_value: '0.05' },
+    { classification: 'Residential', sub_classification: 'Duplex', adjustment_value: '0.10' },
+    { classification: 'Residential', sub_classification: 'Apartments or Row Houses', adjustment_value: '0.10' },
+    { classification: 'Residential', sub_classification: 'Town Houses', adjustment_value: '0.10' },
+    { classification: 'Residential', sub_classification: 'Condominiums', adjustment_value: '0.10' },
+    { classification: 'Commercial', sub_classification: 'Office', adjustment_value: '0.15' },
+    { classification: 'Commercial', sub_classification: 'Bank', adjustment_value: '0.15' },
+    { classification: 'Commercial', sub_classification: 'Theater', adjustment_value: '0.15' },
+    { classification: 'Commercial', sub_classification: 'Hotel/ Motel', adjustment_value: '0.15' },
+    { classification: 'Commercial', sub_classification: 'Bank', adjustment_value: '0.15' },
+    { classification: 'Commercial', sub_classification: 'Bank', adjustment_value: '0.15' },
 ];
 
 function LandAppraisalTab() {
-    const { control, register, setValue } = useFormContext<FormValues>();
+    const { control, register, setValue, watch } = useFormContext<FormValues>();
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'owners',
+        name: 'classifications',
     });
 
+    const classifications = watch('classifications') || [];
+
+    const calculateTotalArea = () => {
+        return classifications.reduce((total, item) => total + (parseFloat(item.area) || 0), 0);
+    };
+
+    const calculateTotalBaseMarketValue = () => {
+        return classifications.reduce((total, item) => total + (parseFloat(item.base_market_value) || 0), 0);
+    };
+
     useEffect(() => {
-        register('owners');
+        register('classifications');
     }, [register]);
 
-    const addOwner = () => {
-        append({ id: uuidv4(), name: '', address: '', contact: '', tin: '', owner_select: { name: '', address: '' } });
+    const addClassification = () => {
+        append({ id: uuidv4(), classification: '', sub_classification: '', area: '', unit_value: '', base_market_value: '', classification_select: { classification: '', sub_classification: '', adjustment_value: '' } });
     };
 
     return (
-        <Box>
-            <Typography variant="h6" gutterBottom mb={3}>
+        <Box p={3}>
+            <Typography variant="h6" gutterBottom>
                 Land Appraisal
             </Typography>
             {fields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
                     <Grid container spacing={2}>
-                        <Grid item xs={2}>
+                        <Grid item xs={12}>
                             <Controller
-                                name={`owners.${index}.name`}
+                                name={`classifications.${index}.classification_select`}
                                 control={control}
-                                defaultValue={field.name}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Classification"
-                                        required
-                                    />
-                                )}
-                                disabled
-                            />
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Controller
-                                name={`owners.${index}.owner_select`}
-                                control={control}
-                                defaultValue={field.owner_select || { name: '', address: '' }}
+                                defaultValue={field.classification_select || { classification: '', sub_classification: '', adjustment_value: '' }}
                                 render={({ field }) => (
                                     <Autocomplete
                                         {...field}
-                                        value={ownerOptions.find(option => option.name === field.value.name) || null}
+                                        value={classificationOptions.find(option => option.classification === field.value.classification && option.sub_classification === field.value.sub_classification) || null}
                                         onChange={(event, value) => {
-                                            field.onChange(value || { name: '', address: '' });
+                                            field.onChange(value || { classification: '', sub_classification: '', adjustment_value: '' });
                                             if (value) {
-                                                setValue(`owners.${index}.name`, value.name);
-                                                setValue(`owners.${index}.address`, value.address);
-                                                setValue(`owners.${index}.contact`, value.contact);
-                                                setValue(`owners.${index}.tin`, value.tin);
+                                                setValue(`classifications.${index}.classification`, value.classification);
+                                                setValue(`classifications.${index}.sub_classification`, value.sub_classification);
+                                                setValue(`classifications.${index}.unit_value`, value.adjustment_value);
+                                                const area = parseFloat(watch(`classifications.${index}.area`) || '0');
+                                                const baseMarketValue = area * parseFloat(value.adjustment_value);
+                                                setValue(`classifications.${index}.base_market_value`, baseMarketValue.toFixed(2));
                                             }
                                         }}
-                                        options={ownerOptions}
-                                        getOptionLabel={(option) => `${option.name} (${option.address.substring(0, 10)}...)`}
+                                        options={classificationOptions}
+                                        getOptionLabel={(option) => `${option.classification} (${option.sub_classification})`}
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
-                                                label="Sub-classification"
+                                                label="Classification"
                                                 required
                                                 InputProps={{
                                                     ...params.InputProps,
@@ -99,45 +102,76 @@ function LandAppraisalTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`owners.${index}.name`}
+                                name={`classifications.${index}.classification`}
                                 control={control}
-                                defaultValue={field.name}
+                                defaultValue={field.classification}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Classification"
+                                        required
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`classifications.${index}.area`}
+                                control={control}
+                                defaultValue={field.area}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
                                         fullWidth
                                         label="Area (Sqm)"
                                         required
+                                        onChange={(event) => {
+                                            field.onChange(event);
+                                            const unitValue = parseFloat(watch(`classifications.${index}.unit_value`) || '0');
+                                            const area = parseFloat(event.target.value || '0');
+                                            const baseMarketValue = unitValue * area;
+                                            setValue(`classifications.${index}.base_market_value`, baseMarketValue.toFixed(2));
+                                        }}
                                     />
                                 )}
                             />
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`owners.${index}.name`}
+                                name={`classifications.${index}.unit_value`}
                                 control={control}
-                                defaultValue={field.name}
+                                defaultValue={field.unit_value}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
                                         fullWidth
                                         label="Unit Value"
                                         required
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
                                     />
                                 )}
                             />
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`owners.${index}.name`}
+                                name={`classifications.${index}.base_market_value`}
                                 control={control}
-                                defaultValue={field.name}
+                                defaultValue={field.base_market_value}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
                                         fullWidth
                                         label="Base Market Value"
                                         required
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
                                     />
                                 )}
                             />
@@ -162,28 +196,36 @@ function LandAppraisalTab() {
                 </Box>
             ))}
             <Box sx={{ position: 'relative', marginBottom: 2 }}>
-                <Grid  container spacing={2}>
+                <Grid container spacing={2}>
                     <Grid item xs={2}>
-                        <Button variant="contained" onClick={addOwner}>
+                        <Button variant="contained" onClick={addClassification}>
                             Add Classification
                         </Button>
                     </Grid>
                     <Grid item xs={3}>
-                    <Box sx={{ typography: 'body2', textAlign: 'end'}}>Total Area:</Box>
+                        <Box sx={{ typography: 'body2', textAlign: 'end' }}>Total Area:</Box>
                     </Grid>
                     <Grid item xs={2}>
                         <TextField
                             fullWidth
                             label="Total Area"
+                            value={calculateTotalArea().toFixed(2)}
+                            InputProps={{
+                                readOnly: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={2}>
-                        <Box display="flex" justifyContent="center"  alignItems="center" sx={{ typography: 'body2'}}>Total:</Box>
+                        <Box display="flex" justifyContent="center" alignItems="center" sx={{ typography: 'body2' }}>Total:</Box>
                     </Grid>
                     <Grid item xs={2}>
                         <TextField
                             fullWidth
                             label="Base Market Value"
+                            value={calculateTotalBaseMarketValue().toFixed(2)}
+                            InputProps={{
+                                readOnly: true,
+                            }}
                         />
                     </Grid>
                 </Grid>

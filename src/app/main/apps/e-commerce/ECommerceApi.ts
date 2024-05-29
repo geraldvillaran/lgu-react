@@ -129,6 +129,14 @@ export type Owner = {
     tin: string;
 };
 
+export type Classification = {
+    id: string;
+    classification: string;
+    are: string;
+    adjustment_value: string;
+    base_market_value: string;
+};
+
 export type EcommerceProductImageType = {
 	id: string;
 	url: string;
@@ -138,6 +146,7 @@ export type EcommerceProductImageType = {
 export type EcommerceProduct = {
 	id: string;
 	owners: Owner[];
+	classifications: Classification[];
 	name: string;
 	handle: string;
 	description: string;
