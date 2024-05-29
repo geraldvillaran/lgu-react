@@ -19,7 +19,7 @@ const ownerOptions = [
     // Add more options as needed
 ];
 
-function OwnersTab() {
+function LandAppraisalTab() {
     const { control, register, setValue } = useFormContext<FormValues>();
     const { fields, append, remove } = useFieldArray({
         control,
@@ -37,12 +37,28 @@ function OwnersTab() {
     return (
         <Box>
             <Typography variant="h6" gutterBottom mb={3}>
-                Owners
+                Land Appraisal
             </Typography>
             {fields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
                     <Grid container spacing={2}>
-                        <Grid item xs={11}>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`owners.${index}.name`}
+                                control={control}
+                                defaultValue={field.name}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Classification"
+                                        required
+                                    />
+                                )}
+                                disabled
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
                             <Controller
                                 name={`owners.${index}.owner_select`}
                                 control={control}
@@ -65,7 +81,7 @@ function OwnersTab() {
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
-                                                label="Owner Select"
+                                                label="Sub-classification"
                                                 required
                                                 InputProps={{
                                                     ...params.InputProps,
@@ -77,6 +93,51 @@ function OwnersTab() {
                                                 }}
                                             />
                                         )}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`owners.${index}.name`}
+                                control={control}
+                                defaultValue={field.name}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Area (Sqm)"
+                                        required
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`owners.${index}.name`}
+                                control={control}
+                                defaultValue={field.name}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Unit Value"
+                                        required
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`owners.${index}.name`}
+                                control={control}
+                                defaultValue={field.name}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Base Market Value"
+                                        required
                                     />
                                 )}
                             />
@@ -96,74 +157,39 @@ function OwnersTab() {
                                 <CloseIcon />
                             </IconButton>
                         </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Controller
-                                name={`owners.${index}.name`}
-                                control={control}
-                                defaultValue={field.name}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Full Name"
-                                        required
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Controller
-                                name={`owners.${index}.address`}
-                                control={control}
-                                defaultValue={field.address}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Address"
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Controller
-                                name={`owners.${index}.contact`}
-                                control={control}
-                                defaultValue={field.contact}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Contact"
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Controller
-                                name={`owners.${index}.tin`}
-                                control={control}
-                                defaultValue={field.tin}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="TIN"
-                                    />
-                                )}
-                            />
-                        </Grid>
                     </Grid>
                     <Divider light sx={{ marginTop: 2 }} />
                 </Box>
             ))}
-            <Box mt={2}>
-                <Button variant="contained" onClick={addOwner}>
-                    Add Owner
-                </Button>
+            <Box sx={{ position: 'relative', marginBottom: 2 }}>
+                <Grid  container spacing={2}>
+                    <Grid item xs={2}>
+                        <Button variant="contained" onClick={addOwner}>
+                            Add Classification
+                        </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                    <Box sx={{ typography: 'body2', textAlign: 'end'}}>Total Area:</Box>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <TextField
+                            fullWidth
+                            label="Total Area"
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Box display="flex" justifyContent="center"  alignItems="center" sx={{ typography: 'body2'}}>Total:</Box>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <TextField
+                            fullWidth
+                            label="Base Market Value"
+                        />
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );
 }
 
-export default OwnersTab;
+export default LandAppraisalTab;
