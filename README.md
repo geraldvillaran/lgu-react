@@ -4,7 +4,11 @@ eThis project was bootstrapped with [Create React App](https://github.com/facebo
 
 In the project directory, you can run:
 
-### `npm start`
+```bash
+npm install
+npm install uuid
+npm start
+```
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
