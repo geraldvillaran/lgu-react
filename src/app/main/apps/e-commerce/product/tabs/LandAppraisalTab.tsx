@@ -22,15 +22,25 @@ interface FormValues {
 
 // Static list of options for the Autocomplete
 const classificationOptions = [
-    { classification: 'Residential', sub_classification: 'Single Detached', adjustment_value: '0.05' },
-    { classification: 'Residential', sub_classification: 'Duplex', adjustment_value: '0.10' },
-    { classification: 'Residential', sub_classification: 'Apartments or Row Houses', adjustment_value: '0.10' },
-    { classification: 'Residential', sub_classification: 'Town Houses', adjustment_value: '0.10' },
-    { classification: 'Residential', sub_classification: 'Condominiums', adjustment_value: '0.10' },
-    { classification: 'Commercial', sub_classification: 'Office', adjustment_value: '0.15' },
-    { classification: 'Commercial', sub_classification: 'Bank', adjustment_value: '0.15' },
-    { classification: 'Commercial', sub_classification: 'Theater', adjustment_value: '0.15' },
-    { classification: 'Commercial', sub_classification: 'Hotel/ Motel', adjustment_value: '0.15' }
+    {
+        group: 'Residential',
+        options: [
+            { sub_classification: 'Single Detached', adjustment_value: '0.05' },
+            { sub_classification: 'Duplex', adjustment_value: '0.10' },
+            { sub_classification: 'Apartments or Row Houses', adjustment_value: '0.10' },
+            { sub_classification: 'Town Houses', adjustment_value: '0.10' },
+            { sub_classification: 'Condominiums', adjustment_value: '0.10' }
+        ]
+    },
+    {
+        group: 'Commercial',
+        options: [
+            { sub_classification: 'Office', adjustment_value: '0.15' },
+            { sub_classification: 'Bank', adjustment_value: '0.15' },
+            { sub_classification: 'Theater', adjustment_value: '0.15' },
+            { sub_classification: 'Hotel/ Motel', adjustment_value: '0.15' }
+        ]
+    }
 ];
 
 function LandAppraisalTab() {
@@ -65,7 +75,7 @@ function LandAppraisalTab() {
             </Typography>
             {fields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1}>
                     <Grid item xs={2}>
                             <Controller
                                 name={`classifications.${index}.classification`}
@@ -76,7 +86,8 @@ function LandAppraisalTab() {
                                         {...field}
                                         fullWidth
                                         label="Classification"
-                                        required
+                                        variant="filled" 
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -92,11 +103,14 @@ function LandAppraisalTab() {
                                 render={({ field }) => (
                                     <Autocomplete
                                         {...field}
-                                        value={classificationOptions.find(option => option.classification === field.value.classification && option.sub_classification === field.value.sub_classification) || null}
+                                        value={classificationOptions
+                                            .flatMap(group => group.options)
+                                            .find(option => option.sub_classification === field.value.sub_classification) || null}
                                         onChange={(event, value) => {
                                             field.onChange(value || { classification: '', sub_classification: '', adjustment_value: '' });
                                             if (value) {
-                                                setValue(`classifications.${index}.classification`, value.classification);
+                                                const group = classificationOptions.find(group => group.options.includes(value));
+                                                setValue(`classifications.${index}.classification`, group?.group || '');
                                                 setValue(`classifications.${index}.sub_classification`, value.sub_classification);
                                                 setValue(`classifications.${index}.unit_value`, value.adjustment_value);
                                                 const area = parseFloat(watch(`classifications.${index}.area`) || '0');
@@ -104,8 +118,9 @@ function LandAppraisalTab() {
                                                 setValue(`classifications.${index}.base_market_value`, baseMarketValue.toFixed(2));
                                             }
                                         }}
-                                        options={classificationOptions}
-                                        getOptionLabel={(option) => `${option.classification} (${option.sub_classification})`}
+                                        options={classificationOptions.flatMap(group => group.options)}
+                                        groupBy={(option) => classificationOptions.find(group => group.options.includes(option))?.group || ''}
+                                        getOptionLabel={(option) => option.sub_classification}
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
@@ -120,6 +135,14 @@ function LandAppraisalTab() {
                                                     ),
                                                 }}
                                             />
+                                        )}
+                                        renderGroup={(params) => (
+                                            <li key={params.key}>
+                                                <Box component="div" sx={{ fontWeight: 'bold', pl: 2, pt: 1 }}>
+                                                    {params.group}
+                                                </Box>
+                                                <ul style={{ padding: 0 }}>{params.children}</ul>
+                                            </li>
                                         )}
                                     />
                                 )}
@@ -157,7 +180,8 @@ function LandAppraisalTab() {
                                         {...field}
                                         fullWidth
                                         label="Unit Value"
-                                        required
+                                        variant="filled" 
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -176,6 +200,8 @@ function LandAppraisalTab() {
                                         fullWidth
                                         label="Base Market Value"
                                         required
+                                        variant="filled" 
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -205,7 +231,7 @@ function LandAppraisalTab() {
             <Box sx={{ position: 'relative', marginBottom: 2 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Button variant="contained" onClick={addClassification}>
+                        <Button variant="contained" color="success" onClick={addClassification}>
                             Add Classification
                         </Button>
                     </Grid>
@@ -217,19 +243,23 @@ function LandAppraisalTab() {
                             fullWidth
                             label="Total Area"
                             value={calculateTotalArea().toFixed(2)}
+                            variant="filled" 
+                            color="success"
                             InputProps={{
                                 readOnly: true,
                             }}
                         />
                     </Grid>
                     <Grid item xs={2}>
-                        <Box display="flex" justifyContent="center" alignItems="center" sx={{ typography: 'body2' }}>Total:</Box>
+                        <Box sx={{ typography: 'body2', textAlign: 'end' }}>Total Base Market Value:</Box>
                     </Grid>
                     <Grid item xs={2}>
                         <TextField
                             fullWidth
-                            label="Base Market Value"
+                            label="Total Base Market Value"
                             value={calculateTotalBaseMarketValue().toFixed(2)}
+                            variant="filled" 
+                            color="success"
                             InputProps={{
                                 readOnly: true,
                             }}
