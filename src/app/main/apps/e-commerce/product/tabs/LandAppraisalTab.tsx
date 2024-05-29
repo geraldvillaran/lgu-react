@@ -6,9 +6,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import { v4 as uuidv4 } from 'uuid';
 import { Classification } from '../../ECommerceApi'; // Assuming Classification type is exported from ECommerceApi
 
+// Define a type that extends Classification with the classification_select field
+interface ClassificationWithSelect extends Classification {
+    classification_select?: {
+        classification: string;
+        sub_classification: string;
+        adjustment_value: string;
+    };
+}
+
 // Define the form values type
 interface FormValues {
-    classifications: Array<Classification & { classification_select?: { classification: string; sub_classification: string, adjustment_value: string } }>;
+    classifications: ClassificationWithSelect[];
 }
 
 // Static list of options for the Autocomplete
@@ -21,9 +30,7 @@ const classificationOptions = [
     { classification: 'Commercial', sub_classification: 'Office', adjustment_value: '0.15' },
     { classification: 'Commercial', sub_classification: 'Bank', adjustment_value: '0.15' },
     { classification: 'Commercial', sub_classification: 'Theater', adjustment_value: '0.15' },
-    { classification: 'Commercial', sub_classification: 'Hotel/ Motel', adjustment_value: '0.15' },
-    { classification: 'Commercial', sub_classification: 'Bank', adjustment_value: '0.15' },
-    { classification: 'Commercial', sub_classification: 'Bank', adjustment_value: '0.15' },
+    { classification: 'Commercial', sub_classification: 'Hotel/ Motel', adjustment_value: '0.15' }
 ];
 
 function LandAppraisalTab() {
@@ -52,14 +59,32 @@ function LandAppraisalTab() {
     };
 
     return (
-        <Box p={3}>
-            <Typography variant="h6" gutterBottom>
+        <Box>
+            <Typography variant="h6" gutterBottom mb={3}>
                 Land Appraisal
             </Typography>
             {fields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12}>
+                    <Grid item xs={2}>
+                            <Controller
+                                name={`classifications.${index}.classification`}
+                                control={control}
+                                defaultValue={field.classification}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Classification"
+                                        required
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
                             <Controller
                                 name={`classifications.${index}.classification_select`}
                                 control={control}
@@ -96,24 +121,6 @@ function LandAppraisalTab() {
                                                 }}
                                             />
                                         )}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <Controller
-                                name={`classifications.${index}.classification`}
-                                control={control}
-                                defaultValue={field.classification}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Classification"
-                                        required
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
                                     />
                                 )}
                             />
@@ -197,12 +204,12 @@ function LandAppraisalTab() {
             ))}
             <Box sx={{ position: 'relative', marginBottom: 2 }}>
                 <Grid container spacing={2}>
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
                         <Button variant="contained" onClick={addClassification}>
                             Add Classification
                         </Button>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={2}>
                         <Box sx={{ typography: 'body2', textAlign: 'end' }}>Total Area:</Box>
                     </Grid>
                     <Grid item xs={2}>

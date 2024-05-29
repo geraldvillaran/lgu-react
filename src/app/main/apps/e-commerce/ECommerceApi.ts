@@ -132,8 +132,9 @@ export type Owner = {
 export type Classification = {
     id: string;
     classification: string;
-    are: string;
-    adjustment_value: string;
+	sub_classification: string;
+    area: string;
+    unit_value: string;
     base_market_value: string;
 };
 
