@@ -118,19 +118,21 @@ function Product() {
                             scrollButtons="auto"
                             classes={{ root: 'w-full h-64 border-b-1' }}
                         >
-                            <Tab className="h-64" label="Owners" />
                             <Tab className="h-64" label="Basic Info" />
-                            <Tab className="h-64" label="Product Images" />
-                            <Tab className="h-64" label="Pricing" />
-                            <Tab className="h-64" label="Inventory" />
-                            <Tab className="h-64" label="Shipping" />
+                            <Tab className="h-64" label="Owners" />
+                            <Tab className="h-64" label="Property Location" />
+                            <Tab className="h-64" label="Property Boundaries" />
+                            <Tab className="h-64" label="Land Appraisal" />
+                            <Tab className="h-64" label="Other Improvements" />
+                            <Tab className="h-64" label="Market Value" />
+                            <Tab className="h-64" label="Property Assessment" />
                         </Tabs>
                         <div className="p-16 sm:p-24 max-w-3xl">
                             <div className={tabValue !== 0 ? 'hidden' : ''}>
-                                <OwnersTab />
+                                <BasicInfoTab />
                             </div>
                             <div className={tabValue !== 1 ? 'hidden' : ''}>
-                                <BasicInfoTab />
+                                <OwnersTab />
                             </div>
                             <div className={tabValue !== 2 ? 'hidden' : ''}>
                                 <ProductImagesTab />
@@ -142,6 +144,12 @@ function Product() {
                                 <InventoryTab />
                             </div>
                             <div className={tabValue !== 5 ? 'hidden' : ''}>
+                                <ShippingTab />
+                            </div>
+                            <div className={tabValue !== 6 ? 'hidden' : ''}>
+                                <ShippingTab />
+                            </div>
+                            <div className={tabValue !== 7 ? 'hidden' : ''}>
                                 <ShippingTab />
                             </div>
                         </div>

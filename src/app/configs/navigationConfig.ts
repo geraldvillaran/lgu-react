@@ -23,13 +23,6 @@ const navigationConfig: FuseNavItemType[] = [
 		translate: 'DASHBOARDS',
 		children: [
 			{
-				id: 'dashboards.project',
-				title: 'Project',
-				type: 'item',
-				icon: 'heroicons-outline:clipboard-check',
-				url: '/dashboards/project'
-			},
-			{
 				id: 'dashboards.analytics',
 				title: 'Analytics',
 				type: 'item',
@@ -95,27 +88,34 @@ const navigationConfig: FuseNavItemType[] = [
 			},
 			{
 				id: 'apps.ecommerce',
-				title: 'ECommerce',
+				title: 'RPTA',
 				type: 'collapse',
-				icon: 'heroicons-outline:shopping-cart',
-				translate: 'ECOMMERCE',
+				icon: 'heroicons-outline:office-building',
+				translate: 'RPTA',
 				children: [
 					{
+						id: 'dashboards.project',
+						title: 'GIS',
+						type: 'item',
+						icon: 'heroicons-outline:map',
+						url: '/dashboards/project'
+					},
+					{
 						id: 'e-commerce-products',
-						title: 'Products',
+						title: 'Transactions',
 						type: 'item',
 						url: 'apps/e-commerce/products',
 						end: true
 					},
 					{
 						id: 'e-commerce-product-detail',
-						title: 'Product Detail',
+						title: 'Transaction Detail',
 						type: 'item',
 						url: 'apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print'
 					},
 					{
 						id: 'e-commerce-new-product',
-						title: 'New Product',
+						title: 'New Transaction',
 						type: 'item',
 						url: 'apps/e-commerce/products/new'
 					},

@@ -102,7 +102,7 @@ function ProductHeader() {
                             variant="caption"
                             className="font-medium"
                         >
-                            Product Detail
+                            Transaction Detail
                         </Typography>
                     </motion.div>
                 </div>
