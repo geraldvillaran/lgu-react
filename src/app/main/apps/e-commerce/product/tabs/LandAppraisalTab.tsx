@@ -5,6 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CloseIcon from '@mui/icons-material/Close';
 import { v4 as uuidv4 } from 'uuid';
 import { Classification } from '../../ECommerceApi'; // Assuming Classification type is exported from ECommerceApi
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon/FuseSvgIcon';
 
 // Define a type that extends Classification with the classification_select field
 interface ClassificationWithSelect extends Classification {
@@ -232,6 +233,7 @@ function LandAppraisalTab() {
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
                         <Button variant="contained" color="success" onClick={addClassification}>
+                        <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
                             Add Classification
                         </Button>
                     </Grid>
@@ -262,6 +264,7 @@ function LandAppraisalTab() {
                             color="success"
                             InputProps={{
                                 readOnly: true,
+                                sx: { fontWeight: 'bold', color: 'green' }
                             }}
                         />
                     </Grid>

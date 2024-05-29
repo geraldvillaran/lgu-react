@@ -5,6 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CloseIcon from '@mui/icons-material/Close';
 import { v4 as uuidv4 } from 'uuid';
 import { Owner } from '../../ECommerceApi'; // Assuming Owner type is exported from ECommerceApi
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon/FuseSvgIcon';
 
 // Define the form values type
 interface FormValues {
@@ -158,7 +159,8 @@ function OwnersTab() {
                 </Box>
             ))}
             <Box mt={2}>
-                <Button variant="contained" onClick={addOwner}>
+                <Button variant="contained" color="success" onClick={addOwner}>
+                    <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
                     Add Owner
                 </Button>
             </Box>
