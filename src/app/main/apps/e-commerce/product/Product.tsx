@@ -24,6 +24,7 @@ import ProductModel from './models/ProductModel';
 import { Owner } from '../ECommerceApi'; // Assuming Owner type is exported from ECommerceApi
 import LandAppraisalTab from './tabs/LandAppraisalTab';
 import OtherImprovementsTab from './tabs/OtherImprovementsTab';
+import MarketValueTab from './tabs/MarketValueTab';
 
 const schema = z.object({
     name: z.string().nonempty('You must enter a product name').min(5, 'The product name must be at least 5 characters')
@@ -150,7 +151,7 @@ function Product() {
                                 <OtherImprovementsTab />
                             </div>
                             <div className={tabValue !== 6 ? 'hidden' : ''}>
-                                <ShippingTab />
+                                <MarketValueTab />
                             </div>
                             <div className={tabValue !== 7 ? 'hidden' : ''}>
                                 <ShippingTab />

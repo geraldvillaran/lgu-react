@@ -30,7 +30,7 @@ const improvementOptions = [
     { kind: 'Gazebo', unit_value: '300' }
 ];
 
-function OtherImprovementsTab() {
+function MarketValueTab() {
     const { control, register, setValue, watch } = useFormContext<FormValues>();
     const { fields, append, remove } = useFieldArray({
         control,
@@ -229,4 +229,4 @@ function OtherImprovementsTab() {
     );
 }
 
-export default OtherImprovementsTab;
+export default MarketValueTab;
