@@ -30,7 +30,7 @@ const improvementOptions = [
     { kind: 'Gazebo', unit_value: '300' }
 ];
 
-function MarketValueTab() {
+function PropertyAssessmentTab() {
     const { control, register, setValue, watch } = useFormContext<FormValues>();
     const { fields, append, remove } = useFieldArray({
         control,
@@ -58,32 +58,12 @@ function MarketValueTab() {
     return (
         <Box>
             <Typography variant="h6" gutterBottom mb={3}>
-                Market Value
+                Property Assessment
             </Typography>
             {fields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
                     <Grid container spacing={1}>
-                        <Grid item xs={2}>
-                            <Controller
-                                name={`improvements.${index}.base_market_value`}
-                                control={control}
-                                defaultValue={field.base_market_value}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Base Market Value"
-                                        required
-                                        variant="filled"
-                            color="success"
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={5}>
                             <Controller
                                 name={`improvements.${index}.improvement_select`}
                                 control={control}
@@ -107,7 +87,7 @@ function MarketValueTab() {
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
-                                                label="Adjustment Factors"
+                                                label="Actual Use"
                                                 required
                                                 InputProps={{
                                                     ...params.InputProps,
@@ -132,29 +112,7 @@ function MarketValueTab() {
                                     <TextField
                                         {...field}
                                         fullWidth
-                                        label="% Adjustment"
-                                        required
-                                        onChange={(event) => {
-                                            field.onChange(event);
-                                            const unitValue = parseFloat(watch(`improvements.${index}.unit_value`) || '0');
-                                            const totalNumber = parseFloat(event.target.value || '0');
-                                            const baseMarketValue = unitValue * totalNumber;
-                                            setValue(`improvements.${index}.base_market_value`, baseMarketValue.toFixed(2));
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <Controller
-                                name={`improvements.${index}.total_number`}
-                                control={control}
-                                defaultValue={field.total_number}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Value Adjustment"
+                                        label="Market Value"
                                         required
                                         onChange={(event) => {
                                             field.onChange(event);
@@ -176,10 +134,30 @@ function MarketValueTab() {
                                     <TextField
                                         {...field}
                                         fullWidth
-                                        label="Market Value"
+                                        label="Assessment Level"
                                         required
                                         variant="filled"
                             color="success"
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`improvements.${index}.base_market_value`}
+                                control={control}
+                                defaultValue={field.base_market_value}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Assessed Value"
+                                        required
+                                        variant="filled"
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -215,12 +193,12 @@ function MarketValueTab() {
                         </Button>
                     </Grid>
                     <Grid item xs={2}>
-                        <Box sx={{ typography: 'body2', textAlign: 'end' }}>Totals:</Box>
+                        <Box sx={{ typography: 'body2', textAlign: 'end' }}>Total Number:</Box>
                     </Grid>
                     <Grid item xs={2}>
                         <TextField
                             fullWidth
-                            label="Total % Adjustment"
+                            label="Total Number"
                             value={calculateTotalNumber().toFixed(2)}
                             variant="filled"
                             color="success"
@@ -230,21 +208,12 @@ function MarketValueTab() {
                         />
                     </Grid>
                     <Grid item xs={2}>
-                        <TextField
-                            fullWidth
-                            label="Total Value Adjustment"
-                            value={calculateTotalNumber().toFixed(2)}
-                            variant="filled"
-                            color="success"
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
+                        <Box display="flex" justifyContent="center" alignItems="center" sx={{ typography: 'body2', textAlign: 'end' }}>Total Base Market Value:</Box>
                     </Grid>
                     <Grid item xs={2}>
                         <TextField
                             fullWidth
-                            label="Total Market Value"
+                            label="Total Base Market Value"
                             value={calculateTotalBaseMarketValue().toFixed(2)}
                             variant="filled"
                             color="success"
@@ -260,4 +229,4 @@ function MarketValueTab() {
     );
 }
 
-export default MarketValueTab;
+export default PropertyAssessmentTab;
