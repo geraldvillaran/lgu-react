@@ -157,7 +157,7 @@ function OtherImprovementsTab() {
                                         label="Base Market Value"
                                         required
                                         variant="filled"
-                            color="success"
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
