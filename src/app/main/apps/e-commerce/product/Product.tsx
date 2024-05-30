@@ -130,6 +130,7 @@ function Product() {
                             <Tab className="h-64" label="Other Improvements" />
                             <Tab className="h-64" label="Market Value" />
                             <Tab className="h-64" label="Property Assessment" />
+                            <Tab className="h-64" label="Superseded Assessment" />
                         </Tabs>
                         <div className="p-16 sm:p-24 ">
                             {/* max-w-3xl */}
@@ -156,6 +157,9 @@ function Product() {
                             </div>
                             <div className={tabValue !== 7 ? 'hidden' : ''}>
                                 <PropertyAssessmentTab />
+                            </div>
+                            <div className={tabValue !== 8 ? 'hidden' : ''}>
+                                <PricingTab />
                             </div>
                         </div>
                     </>

@@ -211,7 +211,7 @@ function MarketValueTab() {
                     <Grid item xs={3}>
                         <Button variant="contained" color="success" onClick={addImprovement}>
                             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-                            Add Improvement
+                            Add Adjustment Factor
                         </Button>
                     </Grid>
                     <Grid item xs={2}>
