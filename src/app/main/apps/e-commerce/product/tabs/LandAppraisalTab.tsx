@@ -77,7 +77,7 @@ function LandAppraisalTab() {
             {fields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
                     <Grid container spacing={1}>
-                    <Grid item xs={2}>
+                        <Grid item xs={2}>
                             <Controller
                                 name={`classifications.${index}.classification`}
                                 control={control}
@@ -87,7 +87,7 @@ function LandAppraisalTab() {
                                         {...field}
                                         fullWidth
                                         label="Classification"
-                                        variant="filled" 
+                                        variant="filled"
                                         color="success"
                                         InputProps={{
                                             readOnly: true,
