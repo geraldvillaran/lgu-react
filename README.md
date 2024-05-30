@@ -48,6 +48,7 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 ```bash
+.
 ├── public/
 │   └── assets/
 │       └── images/
@@ -63,24 +64,31 @@ To learn React, check out the [React documentation](https://reactjs.org/).
     └── app/
         └── main/
             └── apps/
-                ├── e-commerce
-                ├── product/
-                │   ├── models/
-                │   │   └── ProductModel.ts
-                │   ├── tabs/
-                │   │   ├── OwnersTab.tsx
-                │   │   ├── BasicInfoTab.tsx
-                │   │   ├── InventoryTab.tsx
-                │   │   ├── PricingTab.tsx
-                │   │   ├── ProductImagesTab.tsx
-                │   │   └── ShippingTab.tsx
-                │   ├── Product.tsx
-                │   └── ProductHeader.tsx
-                ├── products/
-                │   ├── Products.tsx
-                │   ├── ProductsHeader.tsx
-                │   └── ProductsTable.tsx
-                ├── ECommerceApi.ts
-                ├── ECommerceApp.tsx
-                └── ECommerceAppConfig.tsx
+            │   ├── e-commerce
+            │   ├── product/
+            │   │   ├── models/
+            │   │   │   └── ProductModel.ts
+            │   │   ├── tabs/
+            │   │   │   ├── BasicInfoTab.tsx
+            │   │   │   ├── OwnersTab.tsx
+            │   │   │   ├── LandAppraisalTab.tsx
+            │   │   │   ├── MarketValueTab.tsx
+            │   │   │   ├── OtherImprovementsTab.tsx
+            │   │   │   ├── PropertyAssessmentTab.tsx
+            │   │   │   ├── PropertyBoundariesTab.tsx
+            │   │   │   ├── PropertyLocationTab.tsx
+            │   │   │   └── SupersededTab.tsx
+            │   │   ├── Product.tsx
+            │   │   └── ProductHeader.tsx
+            │   ├── products/
+            │   │   ├── Products.tsx
+            │   │   ├── ProductsHeader.tsx
+            │   │   └── ProductsTable.tsx
+            │   ├── ECommerceApi.ts
+            │   ├── ECommerceApp.tsx
+            │   └── ECommerceAppConfig.tsx
+            └── dashboards/
+                ├── gis/
+                │   └── Gis.tsx
+                └── dashboardsConfigs.ts
 ```
