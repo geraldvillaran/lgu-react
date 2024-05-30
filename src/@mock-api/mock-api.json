@@ -17817,56 +17817,11 @@
               "canvas-print",
               "nature"
             ],
-            "featuredImageId": "1",
+            "featuredImageId": "0",
             "images": [
               {
                 "id": "0",
                 "url": "assets/images/apps/ecommerce/a-walk-amongst-friends.jpg",
-                "type": "image"
-              },
-              {
-                "id": "1",
-                "url": "assets/images/apps/ecommerce/braies-lake.jpg",
-                "type": "image"
-              },
-              {
-                "id": "2",
-                "url": "assets/images/apps/ecommerce/fall-glow.jpg",
-                "type": "image"
-              },
-              {
-                "id": "3",
-                "url": "assets/images/apps/ecommerce/first-snow.jpg",
-                "type": "image"
-              },
-              {
-                "id": "4",
-                "url": "assets/images/apps/ecommerce/lago-di-braies.jpg",
-                "type": "image"
-              },
-              {
-                "id": "5",
-                "url": "assets/images/apps/ecommerce/lago-di-sorapis.jpg",
-                "type": "image"
-              },
-              {
-                "id": "6",
-                "url": "assets/images/apps/ecommerce/never-stop-changing.jpg",
-                "type": "image"
-              },
-              {
-                "id": "7",
-                "url": "assets/images/apps/ecommerce/reaching.jpg",
-                "type": "image"
-              },
-              {
-                "id": "8",
-                "url": "assets/images/apps/ecommerce/morain-lake.jpg",
-                "type": "image"
-              },
-              {
-                "id": "9",
-                "url": "assets/images/apps/ecommerce/yosemite.jpg",
                 "type": "image"
               }
             ],
