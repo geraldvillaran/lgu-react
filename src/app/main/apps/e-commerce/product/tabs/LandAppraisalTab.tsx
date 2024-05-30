@@ -87,7 +87,7 @@ function LandAppraisalTab() {
                                         {...field}
                                         fullWidth
                                         label="Classification"
-                                        variant="filled" 
+                                        variant="filled"
                                         color="success"
                                         InputProps={{
                                             readOnly: true,
@@ -181,7 +181,7 @@ function LandAppraisalTab() {
                                         {...field}
                                         fullWidth
                                         label="Unit Value"
-                                        variant="filled" 
+                                        variant="filled"
                                         color="success"
                                         InputProps={{
                                             readOnly: true,
@@ -201,7 +201,7 @@ function LandAppraisalTab() {
                                         fullWidth
                                         label="Base Market Value"
                                         required
-                                        variant="filled" 
+                                        variant="filled"
                                         color="success"
                                         InputProps={{
                                             readOnly: true,
@@ -245,7 +245,7 @@ function LandAppraisalTab() {
                             fullWidth
                             label="Total Area"
                             value={calculateTotalArea().toFixed(2)}
-                            variant="filled" 
+                            variant="filled"
                             color="success"
                             InputProps={{
                                 readOnly: true,
@@ -260,7 +260,7 @@ function LandAppraisalTab() {
                             fullWidth
                             label="Total Base Market Value"
                             value={calculateTotalBaseMarketValue().toFixed(2)}
-                            variant="filled" 
+                            variant="filled"
                             color="success"
                             InputProps={{
                                 readOnly: true,
