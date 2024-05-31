@@ -28,6 +28,7 @@ import MarketValueTab from './tabs/MarketValueTab';
 import PropertyAssessmentTab from './tabs/PropertyAssessmentTab';
 import PropertyLocationTab from './tabs/PropertyLocationTab';
 import PropertyBoundariesTab from './tabs/PropertyBoundariesTab';
+import SupersededTab from './tabs/SupersededTab';
 
 const schema = z.object({
     name: z.string().nonempty('You must enter a product name').min(5, 'The product name must be at least 5 characters')
@@ -161,7 +162,7 @@ function Product() {
                                 <PropertyAssessmentTab />
                             </div>
                             <div className={tabValue !== 8 ? 'hidden' : ''}>
-                                <PricingTab />
+                                <SupersededTab />
                             </div>
                         </div>
                     </>
