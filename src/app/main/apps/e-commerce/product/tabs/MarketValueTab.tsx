@@ -167,7 +167,7 @@ function MarketValueTab() {
                                 )}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={3}>
                             <Controller
                                 name={`improvements.${index}.unit_value`}
                                 control={control}
@@ -179,28 +179,13 @@ function MarketValueTab() {
                                         label="Market Value"
                                         required
                                         variant="filled"
-                            color="success"
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
                                     />
                                 )}
                             />
-                        </Grid>
-                        <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <IconButton
-                                onClick={() => remove(index)}
-                                size="small"
-                                sx={{
-                                    color: 'inherit',
-                                    '&:hover': {
-                                        backgroundColor: 'red',
-                                        color: 'white',
-                                    },
-                                }}
-                            >
-                                <CloseIcon />
-                            </IconButton>
                         </Grid>
                     </Grid>
                     <Divider light sx={{ marginTop: 2 }} />
@@ -209,10 +194,10 @@ function MarketValueTab() {
             <Box sx={{ position: 'relative', marginBottom: 2 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Button variant="contained" color="success" onClick={addImprovement}>
+                        {/* <Button variant="contained" color="success" onClick={addImprovement}>
                             <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
                             Add Adjustment Factor
-                        </Button>
+                        </Button> */}
                     </Grid>
                     <Grid item xs={2}>
                         <Box sx={{ typography: 'body2', textAlign: 'end' }}>Totals:</Box>
@@ -241,7 +226,7 @@ function MarketValueTab() {
                             }}
                         />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
                         <TextField
                             fullWidth
                             label="Total Market Value"
