@@ -18,7 +18,7 @@ interface ClassificationWithSelect extends Classification {
 
 // Define the form values type
 interface FormValues {
-    classifications: ClassificationWithSelect[];
+    landAppraisals: ClassificationWithSelect[];
 }
 
 // Static list of options for the Autocomplete
@@ -46,26 +46,26 @@ const classificationOptions = [
 
 function LandAppraisalTab() {
     const { control, register, setValue, watch } = useFormContext<FormValues>();
-    const { fields, append, remove } = useFieldArray({
+    const { fields: landAppraisalFields, append, remove } = useFieldArray({
         control,
-        name: 'classifications',
+        name: 'landAppraisals',
     });
 
-    const classifications = watch('classifications') || [];
+    const landAppraisals = watch('landAppraisals') || [];
 
     const calculateTotalArea = () => {
-        return classifications.reduce((total, item) => total + (parseFloat(item.area) || 0), 0);
+        return landAppraisals.reduce((total, item) => total + (parseFloat(item.area) || 0), 0);
     };
 
     const calculateTotalBaseMarketValue = () => {
-        return classifications.reduce((total, item) => total + (parseFloat(item.base_market_value) || 0), 0);
+        return landAppraisals.reduce((total, item) => total + (parseFloat(item.base_market_value) || 0), 0);
     };
 
     useEffect(() => {
-        register('classifications');
+        register('landAppraisals');
     }, [register]);
 
-    const addClassification = () => {
+    const addLandAppraisal = () => {
         append({ id: uuidv4(), classification: '', sub_classification: '', area: '', unit_value: '', base_market_value: '', classification_select: { classification: '', sub_classification: '', adjustment_value: '' } });
     };
 
@@ -74,12 +74,12 @@ function LandAppraisalTab() {
             <Typography variant="h6" gutterBottom mb={3}>
                 Land Appraisal
             </Typography>
-            {fields.map((field, index) => (
+            {landAppraisalFields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
                             <Controller
-                                name={`classifications.${index}.classification`}
+                                name={`landAppraisals.${index}.classification`}
                                 control={control}
                                 defaultValue={field.classification}
                                 render={({ field }) => (
@@ -98,7 +98,7 @@ function LandAppraisalTab() {
                         </Grid>
                         <Grid item xs={3}>
                             <Controller
-                                name={`classifications.${index}.classification_select`}
+                                name={`landAppraisals.${index}.classification_select`}
                                 control={control}
                                 defaultValue={field.classification_select || { classification: '', sub_classification: '', adjustment_value: '' }}
                                 render={({ field }) => (
@@ -111,12 +111,12 @@ function LandAppraisalTab() {
                                             field.onChange(value || { classification: '', sub_classification: '', adjustment_value: '' });
                                             if (value) {
                                                 const group = classificationOptions.find(group => group.options.includes(value));
-                                                setValue(`classifications.${index}.classification`, group?.group || '');
-                                                setValue(`classifications.${index}.sub_classification`, value.sub_classification);
-                                                setValue(`classifications.${index}.unit_value`, value.adjustment_value);
-                                                const area = parseFloat(watch(`classifications.${index}.area`) || '0');
+                                                setValue(`landAppraisals.${index}.classification`, group?.group || '');
+                                                setValue(`landAppraisals.${index}.sub_classification`, value.sub_classification);
+                                                setValue(`landAppraisals.${index}.unit_value`, value.adjustment_value);
+                                                const area = parseFloat(watch(`landAppraisals.${index}.area`) || '0');
                                                 const baseMarketValue = area * parseFloat(value.adjustment_value);
-                                                setValue(`classifications.${index}.base_market_value`, baseMarketValue.toFixed(2));
+                                                setValue(`landAppraisals.${index}.base_market_value`, baseMarketValue.toFixed(2));
                                             }
                                         }}
                                         options={classificationOptions.flatMap(group => group.options)}
@@ -151,7 +151,7 @@ function LandAppraisalTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`classifications.${index}.area`}
+                                name={`landAppraisals.${index}.area`}
                                 control={control}
                                 defaultValue={field.area}
                                 render={({ field }) => (
@@ -162,10 +162,10 @@ function LandAppraisalTab() {
                                         required
                                         onChange={(event) => {
                                             field.onChange(event);
-                                            const unitValue = parseFloat(watch(`classifications.${index}.unit_value`) || '0');
+                                            const unitValue = parseFloat(watch(`landAppraisals.${index}.unit_value`) || '0');
                                             const area = parseFloat(event.target.value || '0');
                                             const baseMarketValue = unitValue * area;
-                                            setValue(`classifications.${index}.base_market_value`, baseMarketValue.toFixed(2));
+                                            setValue(`landAppraisals.${index}.base_market_value`, baseMarketValue.toFixed(2));
                                         }}
                                     />
                                 )}
@@ -173,7 +173,7 @@ function LandAppraisalTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`classifications.${index}.unit_value`}
+                                name={`landAppraisals.${index}.unit_value`}
                                 control={control}
                                 defaultValue={field.unit_value}
                                 render={({ field }) => (
@@ -192,7 +192,7 @@ function LandAppraisalTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`classifications.${index}.base_market_value`}
+                                name={`landAppraisals.${index}.base_market_value`}
                                 control={control}
                                 defaultValue={field.base_market_value}
                                 render={({ field }) => (
@@ -232,8 +232,8 @@ function LandAppraisalTab() {
             <Box sx={{ position: 'relative', marginBottom: 2 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Button variant="contained" color="success" onClick={addClassification}>
-                        <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
+                        <Button variant="contained" color="success" onClick={addLandAppraisal}>
+                            <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
                             Add Classification
                         </Button>
                     </Grid>

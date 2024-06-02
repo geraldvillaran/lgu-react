@@ -1,58 +1,56 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Grid, TextField, Typography, IconButton, Divider } from '@mui/material';
+import { Box, Grid, TextField, Typography, Divider } from '@mui/material';
 import { Controller, useFormContext, useFieldArray } from 'react-hook-form';
-import Autocomplete from '@mui/material/Autocomplete';
-import CloseIcon from '@mui/icons-material/Close';
-import { v4 as uuidv4 } from 'uuid';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon/FuseSvgIcon';
 
 // Define the form values type
 interface FormValues {
-    improvements: Array<{
+    landAppraisals: Array<{
         id: string;
-        kind: string;
-        total_number: string;
-        unit_value: string;
         base_market_value: string;
-        improvement_select?: {
-            kind: string;
-            unit_value: string;
-        };
+        adjustment_factors: string;
+        percent_adjustment: string;
+        value_adjustment: string;
+        market_value: string;
+    }>;
+    otherImprovements: Array<{
+        id: string;
+        base_market_value: string;
+        adjustment_factors: string;
+        percent_adjustment: string;
+        value_adjustment: string;
+        market_value: string;
     }>;
 }
 
-// Static list of options for the Autocomplete
-const improvementOptions = [
-    { kind: 'Fence', unit_value: '50' },
-    { kind: 'Shed', unit_value: '200' },
-    { kind: 'Sidewalk', unit_value: '100' },
-    { kind: 'Pool', unit_value: '500' },
-    { kind: 'Gazebo', unit_value: '300' }
-];
-
 function MarketValueTab() {
     const { control, register, setValue, watch } = useFormContext<FormValues>();
-    const { fields, append, remove } = useFieldArray({
+    const { fields: landAppraisalFields } = useFieldArray({
         control,
-        name: 'improvements',
+        name: 'landAppraisals',
+    });
+    const { fields: improvementFields } = useFieldArray({
+        control,
+        name: 'otherImprovements',
     });
 
-    const improvements = watch('improvements') || [];
-
-    const calculateTotalNumber = () => {
-        return improvements.reduce((total, item) => total + (parseFloat(item.total_number) || 0), 0);
-    };
-
-    const calculateTotalBaseMarketValue = () => {
-        return improvements.reduce((total, item) => total + (parseFloat(item.base_market_value) || 0), 0);
-    };
+    const landAppraisals = watch('landAppraisals') || [];
+    const improvements = watch('otherImprovements') || [];
 
     useEffect(() => {
-        register('improvements');
+        register('landAppraisals');
+        register('otherImprovements');
     }, [register]);
 
-    const addImprovement = () => {
-        append({ id: uuidv4(), kind: '', total_number: '', unit_value: '', base_market_value: '', improvement_select: { kind: '', unit_value: '' } });
+    const calculateValueAdjustment = (baseMarketValue: number, percentAdjustment: number) => {
+        return (baseMarketValue * (percentAdjustment / 100)).toFixed(2);
+    };
+
+    const calculateMarketValue = (baseMarketValue: number, valueAdjustment: number) => {
+        return (baseMarketValue - valueAdjustment).toFixed(2);
+    };
+
+    const calculateTotal = (items: any[], field: string) => {
+        return items.reduce((total, item) => total + (parseFloat(item[field]) || 0), 0).toFixed(2);
     };
 
     return (
@@ -60,12 +58,15 @@ function MarketValueTab() {
             <Typography variant="h6" gutterBottom mb={3}>
                 Market Value
             </Typography>
-            {fields.map((field, index) => (
-                <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
+            <Typography variant="caption">
+                Land Appraisal
+            </Typography>
+            {landAppraisalFields.map((field, index) => (
+                <Box key={field.id} sx={{ position: 'relative', marginTop: 2 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
                             <Controller
-                                name={`improvements.${index}.base_market_value`}
+                                name={`landAppraisals.${index}.base_market_value`}
                                 control={control}
                                 defaultValue={field.base_market_value}
                                 render={({ field }) => (
@@ -75,7 +76,7 @@ function MarketValueTab() {
                                         label="Base Market Value"
                                         required
                                         variant="filled"
-                            color="success"
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -85,61 +86,39 @@ function MarketValueTab() {
                         </Grid>
                         <Grid item xs={3}>
                             <Controller
-                                name={`improvements.${index}.improvement_select`}
+                                name={`landAppraisals.${index}.adjustment_factors`}
                                 control={control}
-                                defaultValue={field.improvement_select || { kind: '', unit_value: '' }}
+                                defaultValue={field.adjustment_factors}
                                 render={({ field }) => (
-                                    <Autocomplete
+                                    <TextField
                                         {...field}
-                                        value={improvementOptions.find(option => option.kind === field.value.kind) || null}
-                                        onChange={(event, value) => {
-                                            field.onChange(value || { kind: '', unit_value: '' });
-                                            if (value) {
-                                                setValue(`improvements.${index}.kind`, value.kind);
-                                                setValue(`improvements.${index}.unit_value`, value.unit_value);
-                                                const totalNumber = parseFloat(watch(`improvements.${index}.total_number`) || '0');
-                                                const baseMarketValue = totalNumber * parseFloat(value.unit_value);
-                                                setValue(`improvements.${index}.base_market_value`, baseMarketValue.toFixed(2));
-                                            }
-                                        }}
-                                        options={improvementOptions}
-                                        getOptionLabel={(option) => option.kind}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                label="Adjustment Factors"
-                                                required
-                                                InputProps={{
-                                                    ...params.InputProps,
-                                                    endAdornment: (
-                                                        <React.Fragment>
-                                                            {params.InputProps.endAdornment}
-                                                        </React.Fragment>
-                                                    ),
-                                                }}
-                                            />
-                                        )}
+                                        fullWidth
+                                        label="Adjustment Factors"
+                                        required
                                     />
                                 )}
                             />
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`improvements.${index}.total_number`}
+                                name={`landAppraisals.${index}.percent_adjustment`}
                                 control={control}
-                                defaultValue={field.total_number}
+                                defaultValue={field.percent_adjustment}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
                                         fullWidth
                                         label="% Adjustment"
+                                        type="number"
                                         required
                                         onChange={(event) => {
+                                            const percentAdjustment = parseFloat(event.target.value || '0');
+                                            const baseMarketValue = parseFloat(watch(`landAppraisals.${index}.base_market_value`) || '0');
+                                            const valueAdjustment = parseFloat(calculateValueAdjustment(baseMarketValue, percentAdjustment));
+                                            const marketValue = calculateMarketValue(baseMarketValue, valueAdjustment);
+                                            setValue(`landAppraisals.${index}.value_adjustment`, valueAdjustment.toString());
+                                            setValue(`landAppraisals.${index}.market_value`, marketValue);
                                             field.onChange(event);
-                                            const unitValue = parseFloat(watch(`improvements.${index}.unit_value`) || '0');
-                                            const totalNumber = parseFloat(event.target.value || '0');
-                                            const baseMarketValue = unitValue * totalNumber;
-                                            setValue(`improvements.${index}.base_market_value`, baseMarketValue.toFixed(2));
                                         }}
                                     />
                                 )}
@@ -147,21 +126,18 @@ function MarketValueTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`improvements.${index}.total_number`}
+                                name={`landAppraisals.${index}.value_adjustment`}
                                 control={control}
-                                defaultValue={field.total_number}
+                                defaultValue={field.value_adjustment}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
                                         fullWidth
                                         label="Value Adjustment"
+                                        type="number"
                                         required
-                                        onChange={(event) => {
-                                            field.onChange(event);
-                                            const unitValue = parseFloat(watch(`improvements.${index}.unit_value`) || '0');
-                                            const totalNumber = parseFloat(event.target.value || '0');
-                                            const baseMarketValue = unitValue * totalNumber;
-                                            setValue(`improvements.${index}.base_market_value`, baseMarketValue.toFixed(2));
+                                        InputProps={{
+                                            readOnly: true,
                                         }}
                                     />
                                 )}
@@ -169,15 +145,14 @@ function MarketValueTab() {
                         </Grid>
                         <Grid item xs={3}>
                             <Controller
-                                name={`improvements.${index}.unit_value`}
+                                name={`landAppraisals.${index}.market_value`}
                                 control={control}
-                                defaultValue={field.unit_value}
+                                defaultValue={field.market_value}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
                                         fullWidth
                                         label="Market Value"
-                                        required
                                         variant="filled"
                                         color="success"
                                         InputProps={{
@@ -191,13 +166,117 @@ function MarketValueTab() {
                     <Divider light sx={{ marginTop: 2 }} />
                 </Box>
             ))}
-            <Box sx={{ position: 'relative', marginBottom: 2 }}>
+            <Typography variant="caption">
+                Other Improvements
+            </Typography>
+            {improvementFields.map((field, index) => (
+                <Box key={field.id} sx={{ position: 'relative', marginTop: 2 }}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`otherImprovements.${index}.base_market_value`}
+                                control={control}
+                                defaultValue={field.base_market_value}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Base Market Value"
+                                        required
+                                        variant="filled"
+                                        color="success"
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Controller
+                                name={`otherImprovements.${index}.adjustment_factors`}
+                                control={control}
+                                defaultValue={field.adjustment_factors}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Adjustment Factors"
+                                        required
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`otherImprovements.${index}.percent_adjustment`}
+                                control={control}
+                                defaultValue={field.percent_adjustment || '0'}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="% Adjustment"
+                                        type="number"
+                                        required
+                                        onChange={(event) => {
+                                            const percentAdjustment = parseFloat(event.target.value || '0');
+                                            const baseMarketValue = parseFloat(watch(`otherImprovements.${index}.base_market_value`) || '0');
+                                            const valueAdjustment = parseFloat(calculateValueAdjustment(baseMarketValue, percentAdjustment));
+                                            const marketValue = calculateMarketValue(baseMarketValue, valueAdjustment);
+                                            setValue(`otherImprovements.${index}.value_adjustment`, valueAdjustment.toString());
+                                            setValue(`otherImprovements.${index}.market_value`, marketValue);
+                                            field.onChange(event);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Controller
+                                name={`otherImprovements.${index}.value_adjustment`}
+                                control={control}
+                                defaultValue={field.value_adjustment}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Value Adjustment"
+                                        type="number"
+                                        required
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Controller
+                                name={`otherImprovements.${index}.market_value`}
+                                control={control}
+                                defaultValue={field.market_value}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Market Value"
+                                        variant="filled"
+                                        color="success"
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Divider light sx={{ marginTop: 2 }} />
+                </Box>
+            ))}
+            <Box sx={{ position: 'relative', marginTop: 2, marginBottom: 2 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        {/* <Button variant="contained" color="success" onClick={addImprovement}>
-                            <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-                            Add Adjustment Factor
-                        </Button> */}
                     </Grid>
                     <Grid item xs={2}>
                         <Box sx={{ typography: 'body2', textAlign: 'end' }}>Totals:</Box>
@@ -206,7 +285,7 @@ function MarketValueTab() {
                         <TextField
                             fullWidth
                             label="Total % Adjustment"
-                            value={calculateTotalNumber().toFixed(2)}
+                            value={calculateTotal([...landAppraisals, ...improvements], 'percent_adjustment')}
                             variant="filled"
                             color="success"
                             InputProps={{
@@ -218,7 +297,7 @@ function MarketValueTab() {
                         <TextField
                             fullWidth
                             label="Total Value Adjustment"
-                            value={calculateTotalNumber().toFixed(2)}
+                            value={calculateTotal([...landAppraisals, ...improvements], 'value_adjustment')}
                             variant="filled"
                             color="success"
                             InputProps={{
@@ -229,8 +308,8 @@ function MarketValueTab() {
                     <Grid item xs={3}>
                         <TextField
                             fullWidth
-                            label="Total Market Value"
-                            value={calculateTotalBaseMarketValue().toFixed(2)}
+                            label="Total Base Market Value"
+                            value={calculateTotal([...landAppraisals, ...improvements], 'base_market_value')}
                             variant="filled"
                             color="success"
                             InputProps={{

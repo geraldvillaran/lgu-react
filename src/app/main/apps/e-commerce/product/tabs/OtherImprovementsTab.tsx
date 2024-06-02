@@ -8,7 +8,7 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon/FuseSvgIcon';
 
 // Define the form values type
 interface FormValues {
-    improvements: Array<{
+    otherImprovements: Array<{
         id: string;
         kind: string;
         total_number: string;
@@ -32,23 +32,23 @@ const improvementOptions = [
 
 function OtherImprovementsTab() {
     const { control, register, setValue, watch } = useFormContext<FormValues>();
-    const { fields, append, remove } = useFieldArray({
+    const { fields: improvementFields, append, remove } = useFieldArray({
         control,
-        name: 'improvements',
+        name: 'otherImprovements',
     });
 
-    const improvements = watch('improvements') || [];
+    const otherImprovements = watch('otherImprovements') || [];
 
     const calculateTotalNumber = () => {
-        return improvements.reduce((total, item) => total + (parseFloat(item.total_number) || 0), 0);
+        return otherImprovements.reduce((total, item) => total + (parseFloat(item.total_number) || 0), 0);
     };
 
     const calculateTotalBaseMarketValue = () => {
-        return improvements.reduce((total, item) => total + (parseFloat(item.base_market_value) || 0), 0);
+        return otherImprovements.reduce((total, item) => total + (parseFloat(item.base_market_value) || 0), 0);
     };
 
     useEffect(() => {
-        register('improvements');
+        register('otherImprovements');
     }, [register]);
 
     const addImprovement = () => {
@@ -60,12 +60,12 @@ function OtherImprovementsTab() {
             <Typography variant="h6" gutterBottom mb={3}>
                 Other Improvements
             </Typography>
-            {fields.map((field, index) => (
+            {improvementFields.map((field, index) => (
                 <Box key={field.id} sx={{ position: 'relative', marginBottom: 2 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={5}>
                             <Controller
-                                name={`improvements.${index}.improvement_select`}
+                                name={`otherImprovements.${index}.improvement_select`}
                                 control={control}
                                 defaultValue={field.improvement_select || { kind: '', unit_value: '' }}
                                 render={({ field }) => (
@@ -75,11 +75,11 @@ function OtherImprovementsTab() {
                                         onChange={(event, value) => {
                                             field.onChange(value || { kind: '', unit_value: '' });
                                             if (value) {
-                                                setValue(`improvements.${index}.kind`, value.kind);
-                                                setValue(`improvements.${index}.unit_value`, value.unit_value);
-                                                const totalNumber = parseFloat(watch(`improvements.${index}.total_number`) || '0');
+                                                setValue(`otherImprovements.${index}.kind`, value.kind);
+                                                setValue(`otherImprovements.${index}.unit_value`, value.unit_value);
+                                                const totalNumber = parseFloat(watch(`otherImprovements.${index}.total_number`) || '0');
                                                 const baseMarketValue = totalNumber * parseFloat(value.unit_value);
-                                                setValue(`improvements.${index}.base_market_value`, baseMarketValue.toFixed(2));
+                                                setValue(`otherImprovements.${index}.base_market_value`, baseMarketValue.toFixed(2));
                                             }
                                         }}
                                         options={improvementOptions}
@@ -105,7 +105,7 @@ function OtherImprovementsTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`improvements.${index}.total_number`}
+                                name={`otherImprovements.${index}.total_number`}
                                 control={control}
                                 defaultValue={field.total_number}
                                 render={({ field }) => (
@@ -116,10 +116,10 @@ function OtherImprovementsTab() {
                                         required
                                         onChange={(event) => {
                                             field.onChange(event);
-                                            const unitValue = parseFloat(watch(`improvements.${index}.unit_value`) || '0');
+                                            const unitValue = parseFloat(watch(`otherImprovements.${index}.unit_value`) || '0');
                                             const totalNumber = parseFloat(event.target.value || '0');
                                             const baseMarketValue = unitValue * totalNumber;
-                                            setValue(`improvements.${index}.base_market_value`, baseMarketValue.toFixed(2));
+                                            setValue(`otherImprovements.${index}.base_market_value`, baseMarketValue.toFixed(2));
                                         }}
                                     />
                                 )}
@@ -127,7 +127,7 @@ function OtherImprovementsTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`improvements.${index}.unit_value`}
+                                name={`otherImprovements.${index}.unit_value`}
                                 control={control}
                                 defaultValue={field.unit_value}
                                 render={({ field }) => (
@@ -137,7 +137,7 @@ function OtherImprovementsTab() {
                                         label="Unit Value"
                                         required
                                         variant="filled"
-                            color="success"
+                                        color="success"
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -147,7 +147,7 @@ function OtherImprovementsTab() {
                         </Grid>
                         <Grid item xs={2}>
                             <Controller
-                                name={`improvements.${index}.base_market_value`}
+                                name={`otherImprovements.${index}.base_market_value`}
                                 control={control}
                                 defaultValue={field.base_market_value}
                                 render={({ field }) => (
