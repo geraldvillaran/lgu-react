@@ -18,12 +18,7 @@ function PropertyLocationTab() {
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						label="Tax Excluded Price"
-						id="priceTaxExcl"
-						InputProps={{
-							startAdornment: <InputAdornment position="start">$</InputAdornment>
-						}}
-						type="number"
+						label="Province/ City"
 						variant="outlined"
 						autoFocus
 						fullWidth
@@ -38,12 +33,8 @@ function PropertyLocationTab() {
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						label="Tax Included Price"
+						label="Municipality"
 						id="priceTaxIncl"
-						InputProps={{
-							startAdornment: <InputAdornment position="start">$</InputAdornment>
-						}}
-						type="number"
 						variant="outlined"
 						fullWidth
 					/>
@@ -57,12 +48,7 @@ function PropertyLocationTab() {
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						label="Tax Rate"
-						id="taxRate"
-						InputProps={{
-							startAdornment: <InputAdornment position="start">$</InputAdornment>
-						}}
-						type="number"
+						label="Brgy/ District"
 						variant="outlined"
 						fullWidth
 					/>
@@ -76,15 +62,10 @@ function PropertyLocationTab() {
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						label="Compared Price"
+						label="No./ Street"
 						id="comparedPrice"
-						InputProps={{
-							startAdornment: <InputAdornment position="start">$</InputAdornment>
-						}}
-						type="number"
 						variant="outlined"
 						fullWidth
-						helperText="Add a compare price to show next to the real price"
 					/>
 				)}
 			/>
